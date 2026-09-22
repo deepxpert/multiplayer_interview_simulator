@@ -1,0 +1,47 @@
+# =========================
+# Dependencies
+# =========================
+
+backend/node_modules/
+interview-frontend/node_modules/
+
+
+# =========================
+# Environment Variables
+# =========================
+
+backend/.env
+.env
+
+
+# =========================
+# Logs
+# =========================
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+
+# =========================
+# Build / Production
+# =========================
+
+interview-frontend/dist/
+interview-frontend/build/
+
+
+# =========================
+# VS Code
+# =========================
+
+.vscode/
+
+
+# =========================
+# OS Files
+# =========================
+
+.DS_Store
+Thumbs.db
