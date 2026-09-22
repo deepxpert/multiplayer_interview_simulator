@@ -1,7 +1,7 @@
 require("dotenv").config();
 const OpenAI = require("openai");
 
-// We point the OpenAI SDK to Groq's servers instead of OpenAI's
+
 const groq = new OpenAI({
     apiKey: process.env.GROQ_API_KEY,
     baseURL: "https://api.groq.com/openai/v1" 
@@ -73,17 +73,6 @@ io.on("connection", (socket) => {
         }
     });
 
-    // socket.on("join-room",(roomId)=>{
-    //     if(!rooms[roomId]){
-    //         socket.emit("error-message", "ROOM NOT FOUND!!");
-    //         return;
-    //     }
-    //     rooms[roomId].user.user2 = socket.id;
-    //     socket.join(roomId);
-    //     console.log("room successfully joined");
-    //     console.log(rooms);
-    // });
-
     socket.on("send-message",async ({message, room})=>{
         const roomData = rooms[room];
         if(!roomData) return;
@@ -134,10 +123,9 @@ async function askAI(history) {
     };
 
     try {
-        // 2. Call the Groq API
+       
         const completion = await groq.chat.completions.create({
-            // "llama-3.1-8b-instant" is incredibly fast and free.
-            // You can also try "llama-3.3-70b-versatile" for smarter answers.
+            
             model: "openai/gpt-oss-20b", 
             messages: [
                 systemPrompt, 
@@ -146,7 +134,6 @@ async function askAI(history) {
             temperature: 0.7, 
         });
 
-        // 3. Return the AI's reply
         return completion.choices[0].message.content;
 
     } catch (error) {
