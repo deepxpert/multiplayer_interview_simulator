@@ -8,7 +8,7 @@ function MessageList({ messages }) {
           key={index}
           className={msg.sender === "ai" ? "ai-msg" : "user-msg"}
         >
-          {msg.sender === "ai" ? "🤖 " : "🧑 "}
+          {msg.sender === "ai" ? "Interviewer " : "You "}
           {msg.message}
         </li>
       ))}

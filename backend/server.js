@@ -143,14 +143,11 @@ async function askAI(history) {
 }
 
 function genarateRoomId(){
-
     const characters = "ABCDFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let roomId = "";
-
     for(let i = 0; i<6; i++){
         const index = Math.floor(Math.random()*characters.length);
         roomId += characters[index];
     }
-
     return roomId;
 }

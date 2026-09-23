@@ -8,6 +8,7 @@ import "./App.css";
 function App(){
   const [roomId, setRoomId] = useState(null);
   const [messages, setMessage] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(1*60);
   const [connected, setConnected] = useState(false);
 
   useEffect(()=>{
@@ -34,6 +35,24 @@ function App(){
 
   },[]);
 
+  useEffect(() => {
+    if (!roomId) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0; 
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [roomId]);
+
+
+
   function createRoom(){
     socket.emit("create-room");
   }
@@ -41,6 +60,12 @@ function App(){
   function sendMessage(text){
     if (!roomId) return;
     socket.emit("send-message", { message: text, room: roomId });
+  }
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
   }
 
   return(
@@ -55,9 +80,20 @@ function App(){
         </div>
       ): (
         <div className="chat-screen">
-          <p className="room-info">Room: {roomId}</p>
-          <MessageList messages={messages} />
-          <MessageInput onSend={sendMessage} />
+            <div className="chat-header">
+              <p className="room-info">Room: {roomId}</p>
+              <p className={`timer ${timeLeft < 60 ? "danger" : ""}`}>
+                ⏱ {formatTime(timeLeft)}
+              </p>
+            </div>
+
+            <MessageList messages={messages} />
+          
+            <MessageInput onSend={sendMessage} disabled={timeLeft === 0} />
+
+            {timeLeft === 0 && (
+              <p className="time-up-msg"> Time is up! The interview has ended.</p>
+            )}
         </div>
       )
     }

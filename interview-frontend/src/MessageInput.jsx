@@ -1,7 +1,7 @@
 // src/MessageInput.jsx
 import { useState } from "react";
 
-function MessageInput({ onSend }) {
+function MessageInput({ onSend, disabled }) {
   const [text, setText] = useState("");
 
   function handleSubmit(e) {
@@ -17,9 +17,10 @@ function MessageInput({ onSend }) {
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Type your answer..."
+        placeholder={disabled? "time is up..." : "type your answer.."}
+        disabled = {disabled}
       />
-      <button type="submit">Send</button>
+      <button type="submit" disabled={disabled}>Send</button>
     </form>
   );
 }
